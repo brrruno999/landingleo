@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinic AI — Infraestructura con IA para Clínicas Estéticas</title>
+  <meta name="description" content="Cerrá más tratamientos sin perder un lead más. Infraestructura de IA activa en 7 días para clínicas estéticas de lujo.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Space Grotesk', 'sans-serif'],
+            body: ['Inter', 'sans-serif']
+          },
+          colors: {
+            dark: '#0a0a0f',
+            violet: { DEFAULT: '#8b5cf6', light: '#a78bfa', dark: '#7c3aed' },
+            cyan:   { DEFAULT: '#06b6d4', light: '#22d3ee', dark: '#0891b2' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #0a0a0f;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    @keyframes gridMove {
+      0%   { background-position: 0 0; }
+      100% { background-position: 50px 50px; }
+    }
+    @keyframes pulseGreen {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.9); }
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    /* ── Grid pattern ── */
+    .grid-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(139,92,246,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,92,246,.08) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+      pointer-events: none;
+    }
+
+    /* ── Glows ── */
+    .glow-violet {
+      position: absolute;
+      top: -100px; left: 50%;
+      transform: translateX(-50%);
+      width: 900px; height: 700px;
+      background: radial-gradient(ellipse at center, rgba(139,92,246,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .glow-cyan {
+      position: absolute;
+      bottom: -80px; right: -80px;
+      width: 600px; height: 500px;
+      background: radial-gradient(ellipse at center, rgba(6,182,212,.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── Gradient text ── */
+    .gradient-text {
+      background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 0 24px rgba(139,92,246,.4), 0 0 48px rgba(6,182,212,.2);
+      transition: transform .3s ease, box-shadow .3s ease;
+      white-space: nowrap;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 32px rgba(139,92,246,.65), 0 0 64px rgba(6,182,212,.35);
+    }
+    .btn-primary-lg { padding: 18px 38px; font-size: 1.1rem; border-radius: 14px; }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: #a78bfa;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 12px;
+      border: 1px solid rgba(139,92,246,.4);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .3s ease;
+      white-space: nowrap;
+    }
+    .btn-outline:hover {
+      border-color: rgba(139,92,246,.8);
+      background: rgba(139,92,246,.1);
+      box-shadow: 0 0 20px rgba(139,92,246,.2);
+      transform: translateY(-2px);
+    }
+
+    /* ── Glass ── */
+    .glass {
+      background: rgba(255,255,255,.03);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .glass-violet {
+      background: rgba(139,92,246,.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(139,92,246,.15);
+    }
+
+    /* ── Card hover ── */
+    .card-hover { transition: transform .3s ease, box-shadow .3s ease; }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 48px rgba(139,92,246,.15);
+    }
+
+    /* ── Badge ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(139,92,246,.1);
+      border: 1px solid rgba(139,92,246,.3);
+      color: #a78bfa;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: .84rem;
+      padding: 6px 18px;
+      border-radius: 100px;
+      letter-spacing: .01em;
+    }
+
+    /* ── Fade-up ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .delay-1 { transition-delay: .1s; }
+    .delay-2 { transition-delay: .2s; }
+    .delay-3 { transition-delay: .3s; }
+    .delay-4 { transition-delay: .4s; }
+    .delay-5 { transition-delay: .5s; }
+
+    /* ── Step number ── */
+    .step-number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 4rem;
+      line-height: 1;
+      background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Icon glows ── */
+    .icon-glow     { filter: drop-shadow(0 0 10px rgba(139,92,246,.7)); }
+    .icon-glow-cyan{ filter: drop-shadow(0 0 10px rgba(6,182,212,.7)); }
+
+    /* ── Metric card ── */
+    .metric-card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 18px;
+      padding: 28px 20px;
+      text-align: center;
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .metric-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 32px rgba(6,182,212,.15);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(139,92,246,.3) 30%, rgba(6,182,212,.3) 70%, transparent 100%);
+      border: none;
+      margin: 0 2rem;
+    }
+
+    /* ── Pulse dot ── */
+    .pulse-dot {
+      width: 8px; height: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulseGreen 2s ease-in-out infinite;
+    }
+
+    /* ── Navbar ── */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 0;
+      transition: all .3s ease;
+    }
+    #navbar.scrolled {
+      background: rgba(10,10,15,.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      padding: 13px 0;
+    }
+
+    /* ── Logo ── */
+    .logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 1.45rem;
+      background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+
+    /* ── Pricing ── */
+    .pricing-popular {
+      border: 1px solid #8b5cf6 !important;
+      box-shadow: 0 0 48px rgba(139,92,246,.22);
+      position: relative;
+    }
+    .popular-badge {
+      position: absolute;
+      top: -14px; left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: .72rem;
+      padding: 4px 18px;
+      border-radius: 100px;
+      white-space: nowrap;
+      letter-spacing: .05em;
+    }
+    .value-strike { text-decoration: line-through; color: #475569; }
+
+    /* ── FAQ ── */
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s ease;
+    }
+    .faq-answer.open { max-height: 320px; }
+    .faq-chevron { transition: transform .3s ease; }
+    .faq-chevron.rotated { transform: rotate(180deg); }
+
+    /* ── Check item ── */
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .9rem;
+      color: #94a3b8;
+    }
+    .check-icon { width: 18px; height: 18px; color: #22c55e; flex-shrink: 0; }
+
+    /* ── Mobile nav ── */
+    @media (max-width: 767px) {
+      .desktop-nav { display: none; }
+    }
+    @media (min-width: 768px) {
+      #mobileMenu { display: none !important; }
+      .mob-btn { display: none; }
+    }
+
+    /* ── Footer social cards ── */
+    .social-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: .85rem;
+      color: #94a3b8;
+      text-decoration: none;
+      transition: all .25s ease;
+    }
+    .social-card:hover { color: #e2e8f0; border-color: rgba(139,92,246,.35) !important; }
+
+    /* float animation for hero element */
+    .float-anim { animation: floatY 6s ease-in-out infinite; }
+  </style>
+</head>
+<body class="bg-dark font-body">
+
+<!-- ══════════════════════════════════════════════════
+     NAV
+══════════════════════════════════════════════════ -->
+<nav id="navbar">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+
+    <a href="#" class="logo-text">Clinic AI</a>
+
+    <div class="desktop-nav flex items-center gap-8">
+      <a href="#servicio"   class="text-slate-400 hover:text-slate-200 transition-colors text-sm font-medium">Servicio</a>
+      <a href="#proceso"    class="text-slate-400 hover:text-slate-200 transition-colors text-sm font-medium">Proceso</a>
+      <a href="#resultados" class="text-slate-400 hover:text-slate-200 transition-colors text-sm font-medium">Resultados</a>
+      <a href="#pricing"    class="text-slate-400 hover:text-slate-200 transition-colors text-sm font-medium">Pricing</a>
+      <a href="#faq"        class="text-slate-400 hover:text-slate-200 transition-colors text-sm font-medium">FAQ</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a href="mailto:brunoaltabas17@gmail.com" class="btn-primary" style="padding:10px 20px;font-size:.875rem;">
+        Reservá tu auditoría
+      </a>
+      <button class="mob-btn text-slate-400 hover:text-white p-2" onclick="toggleMobile()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6"  x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" style="display:none;" class="px-6 pt-4 pb-6 mt-3 border-t border-white/5">
+    <div class="flex flex-col gap-5">
+      <a href="#servicio"   class="text-slate-300 font-medium" onclick="closeMobile()">Servicio</a>
+      <a href="#proceso"    class="text-slate-300 font-medium" onclick="closeMobile()">Proceso</a>
+      <a href="#resultados" class="text-slate-300 font-medium" onclick="closeMobile()">Resultados</a>
+      <a href="#pricing"    class="text-slate-300 font-medium" onclick="closeMobile()">Pricing</a>
+      <a href="#faq"        class="text-slate-300 font-medium" onclick="closeMobile()">FAQ</a>
+      <a href="mailto:brunoaltabas17@gmail.com" class="btn-primary" style="justify-content:center;">Reservá tu auditoría</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════════════
+     BLOQUE 1 · HERO
+══════════════════════════════════════════════════ -->
+<section class="relative min-h-screen flex items-center pt-36 pb-28 overflow-hidden">
+  <div class="grid-pattern"></div>
+  <div class="glow-violet"></div>
+  <div class="glow-cyan"></div>
+
+  <div class="max-w-7xl mx-auto px-6 relative z-10 w-full">
+    <div class="max-w-4xl mx-auto text-center">
+
+      <!-- Badge -->
+      <div class="flex justify-center mb-8 fade-up">
+        <span class="badge"><span class="pulse-dot"></span> Agencia de infraestructura con IA</span>
+      </div>
+
+      <!-- H1 -->
+      <h1 class="font-display font-extrabold text-5xl md:text-7xl leading-[1.08] mb-7 fade-up delay-1">
+        Cerrá más tratamientos<br>
+        <span class="gradient-text">sin perder un lead más</span>
+      </h1>
+
+      <!-- Subhead -->
+      <p class="text-xl md:text-2xl text-slate-400 max-w-2xl mx-auto mb-11 leading-relaxed fade-up delay-2">
+        La infraestructura de IA que responde en segundos, hace el seguimiento y llena tu agenda — sin que tu equipo pierda una hora más en eso.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14 fade-up delay-3">
+        <a href="mailto:brunoaltabas17@gmail.com" class="btn-primary btn-primary-lg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Reservá tu auditoría gratuita
+        </a>
+        <a href="#proceso" class="btn-outline" style="padding:18px 36px;font-size:1.05rem;border-radius:14px;">
+          Ver cómo funciona
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- Trust signals -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-8 fade-up delay-4">
+        <div class="check-item">
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          Activo en 7 días
+        </div>
+        <div class="check-item">
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          Sin permanencia mínima
+        </div>
+        <div class="check-item">
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          ROI garantizado o te devolvemos el dinero
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════════════════════
+     BLOQUE 2 · AGITACIÓN DEL DOLOR
+══════════════════════════════════════════════════ -->
+<section class="py-28 relative overflow-hidden" id="servicio">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="text-center mb-16">
+      <h2 class="font-display font-bold text-4xl md:text-5xl text-slate-100 mb-4 fade-up">¿Te suena familiar?</h2>
+      <p class="text-slate-400 text-lg max-w-xl mx-auto fade-up delay-1">Estos son los problemas que le cuestan decenas de miles de dólares por año a las clínicas estéticas.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-14">
+
+      <!-- Pain 1 -->
+      <div class="glass rounded-2xl p-8 card-hover fade-up delay-1">
+        <div class="flex items-start gap-5">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.36 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.35a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-xl text-slate-100 mb-2">Leads que se enfrían en menos de 10 minutos</h3>
+            <p class="text-slate-400 leading-relaxed">Un paciente interesado escribe a las 11PM. Tu equipo responde a las 9AM. <strong class="text-slate-300">Ya reservó en la clínica de enfrente.</strong> Así se evaporá el 60% de tus consultas sin que te des cuenta.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pain 2 -->
+      <div class="glass rounded-2xl p-8 card-hover fade-up delay-2">
+        <div class="flex items-start gap-5">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.2);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-xl text-slate-100 mb-2">3+ horas al día en seguimiento manual</h3>
+            <p class="text-slate-400 leading-relaxed">Tu recepcionista copia y pega mensajes todo el día para cerrar citas. <strong class="text-slate-300">Ese tiempo podría estar en atención de calidad.</strong> En cambio, lo tirás en tareas que una IA hace 10 veces mejor.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pain 3 -->
+      <div class="glass rounded-2xl p-8 card-hover fade-up delay-3">
+        <div class="flex items-start gap-5">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-xl text-slate-100 mb-2">Pacientes que no vuelven — y nadie los llama</h3>
+            <p class="text-slate-400 leading-relaxed">El 70% del negocio de una clínica estética viene de pacientes existentes. <strong class="text-slate-300">Sin reactivación automática, esos clientes se olvidan de vos</strong> y van al competidor que sí los contactó.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pain 4 -->
+      <div class="glass rounded-2xl p-8 card-hover fade-up delay-4">
+        <div class="flex items-start gap-5">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.2);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-xl text-slate-100 mb-2">Turnos cancelados que quedan vacíos</h3>
+            <p class="text-slate-400 leading-relaxed">Cada turno cancelado sin reemplazo son <strong class="text-slate-300">$200–500 USD que desaparecen de tu caja.</strong> Sin lista de espera automática, tu agenda tiene agujeros que nadie tapa.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Transition -->
+    <div class="flex justify-center fade-up delay-5">
+      <div class="glass-violet rounded-2xl py-5 px-10 max-w-3xl text-center">
+        <p class="font-display font-semibold text-lg text-slate-300">
+          Hay una mejor manera. Y no necesita 6 meses de proyecto IT ni $50K de software.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════════════════════
+     BLOQUE 3 · INTRODUCCIÓN DE LA SOLUCIÓN
+══════════════════════════════════════════════════ -->
+<section class="py-28 relative overflow-hidden" id="proceso">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 55% 65% at 50% 50%, rgba(139,92,246,.09) 0%, transparent 70%);"></div>
+
+  <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+    <div class="flex justify-center mb-5 fade-up">
+      <span class="badge">LA SOLUCIÓN</span>
+    </div>
+    <h2 class="font-display font-extrabold text-4xl md:text-5xl leading-tight mb-6 fade-up delay-1">
+      <span class="gradient-text">Infraestructura de IA que convierte leads en pacientes — automáticamente</span>
+    </h2>
+    <p class="text-xl text-slate-400 leading-relaxed fade-up delay-2">
+      Construimos el sistema que responde en segundos, califica el interés, agenda el turno y reactiva pacientes inactivos — sin que tu equipo intervenga en cada paso. Vos y tu gente se enfocan en lo que saben hacer: atender pacientes de lujo.
+    </p>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════════════════════
+     BLOQUE 4 · STACK DE BENEFICIOS
+══════════════════════════════════════════════════ -->
+<section class="py-28 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="text-center mb-16">
+      <h2 class="font-display font-bold text-4xl md:text-5xl text-slate-100 mb-4 fade-up">Lo que cambia en tu operación</h2>
+      <p class="text-slate-400 text-lg max-w-xl mx-auto fade-up delay-1">Resultados concretos, medibles y activos desde la primera semana.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- 1 Tiempo -->
+      <div class="glass rounded-2xl p-8 card-hover fade-up delay-1">
+        <div class="mb-5">
+          <svg class="icon-glow" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold text-xl text-slate-100 mb-2">20+ horas/semana recuperadas</h3>
+        <p class="text-sm font-semibold mb-3" style="color:#a78bfa;">"Empezamos a atender el doble con el mismo equipo"</p>
+        <p class="text-slate-400 text-sm leading-relaxed">La IA toma WhatsApp, Instagram y email. Tu recepcionista deja de copiar y pegar — se enfoca en la experiencia presencial que diferencia a tu clínica.</p>
+      </div>
+
+      <!-- 2 Conversión -->
+      <div class="glass rounded-2xl p-8 card-hover fade-up delay-2">
+        <div class="mb-5">
+          <svg class="icon-glow" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold text-xl text-slate-100 mb-2">+60% de leads convertidos</h3>
+        <p class="text-sm font-semibold mb-3" style="color:#a78bfa;">"Antes perdíamos el 70% de los interesados. Ahora los cerramos casi todos."</p>
+        <p class="text-slate-400 text-sm leading-relaxed">La IA responde antes de que el lead piense en la competencia. Cualifica, informa precios y agenda. Todo en segundos, no en horas.</p>
+      </div>
+
+      <!-- 3 Capacidad -->
+      <div class="glass rounded-2xl p-8 card-hover fade-up delay-3">
+        <div class="mb-5">
+          <svg class="icon-glow-cyan" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold text-xl text-slate-100 mb-2">3x más consultas sin contratar</h3>
+        <p class="text-sm font-semibold mb-3" style="color:#22d3ee;">"Escalamos la operación sin sumar personal de atención"</p>
+        <p class="text-slate-400 text-sm leading-relaxed">Un asistente de IA maneja 500 conversaciones simultáneas. Tu equipo humano se reserva para lo que realmente importa: la experiencia en cabina.</p>
+      </div>
+
+      <!-- 4 Velocidad -->
+      <div class="glass rounded-2xl p-8 card-hover fade-up delay-1">
+        <div class="mb-5">
+          <svg class="icon-glow" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold text-xl text-slate-100 mb-2">Online en 7 días, no en 6 meses</h3>
+        <p class="text-sm font-semibold mb-3" style="color:#a78bfa;">"Pensé que iba a tardar meses. En una semana ya estaba funcionando."</p>
+        <p class="text-slate-400 text-sm leading-relaxed">Sin proyectos interminables ni consultoras externas. Desplegamos tu infraestructura completa en 7 días calendario, con capacitación incluida.</p>
+      </div>
+
+      <!-- 5 Errores -->
+      <div class="glass rounded-2xl p-8 card-hover fade-up delay-2">
+        <div class="mb-5">
+          <svg class="icon-glow-cyan" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold text-xl text-slate-100 mb-2">0 leads sin respuesta, 24/7</h3>
+        <p class="text-sm font-semibold mb-3" style="color:#22d3ee;">"Por fin dormimos tranquilos sabiendo que ningún lead queda sin atender"</p>
+        <p class="text-slate-400 text-sm leading-relaxed">Domingos, feriados, medianoche. Cada consulta recibe atención inmediata. No más "te vemos mañana" que mata la conversión en el acto.</p>
+      </div>
+
+      <!-- 6 Competitivo -->
+      <div class="glass rounded-2xl p-8 card-hover fade-up delay-3">
+        <div class="mb-5">
+          <svg class="icon-glow" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2">
+            <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold text-xl text-slate-100 mb-2">El primero en responder gana</h3>
+        <p class="text-sm font-semibold mb-3" style="color:#a78bfa;">"Nos separamos de la competencia sin bajar el precio"</p>
+        <p class="text-slate-400 text-sm leading-relaxed">El 78% de los pacientes elige la clínica que responde primero. Con tu IA activa, siempre sos vos. Ventaja competitiva real desde el día 1.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════════════════════
+     BLOQUE 5 · PRUEBA SOCIAL
+══════════════════════════════════════════════════ -->
+<section class="py-28 relative overflow-hidden" id="resultados">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 40% 55% at 80% 50%, rgba(6,182,212,.06) 0%, transparent 70%);"></div>
+
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+
+    <div class="text-center mb-16">
+      <h2 class="font-display font-bold text-4xl md:text-5xl text-slate-100 mb-4 fade-up">Resultados que hablan por sí solos</h2>
+      <p class="text-slate-400 text-lg fade-up delay-1">Métricas reales de clínicas que ya automatizaron su operación con nosotros.</p>
+    </div>
+
+    <!-- Metric cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+      <div class="metric-card fade-up delay-1">
+        <div class="font-display font-extrabold text-4xl gradient-text mb-2">+47</div>
+        <div class="text-slate-300 font-semibold mb-1">Procesos automatizados</div>
+        <div class="text-slate-500 text-sm">por clínica en promedio</div>
+      </div>
+      <div class="metric-card fade-up delay-2">
+        <div class="font-display font-extrabold text-4xl gradient-text mb-2">7 días</div>
+        <div class="text-slate-300 font-semibold mb-1">De implementación</div>
+        <div class="text-slate-500 text-sm">desde el primer contacto</div>
+      </div>
+      <div class="metric-card fade-up delay-3">
+        <div class="font-display font-extrabold text-4xl gradient-text mb-2">+60%</div>
+        <div class="text-slate-300 font-semibold mb-1">Conversión de leads</div>
+        <div class="text-slate-500 text-sm">promedio en el primer mes</div>
+      </div>
+      <div class="metric-card fade-up delay-4">
+        <div class="font-display font-extrabold text-4xl gradient-text mb-2">24/7</div>
+        <div class="text-slate-300 font-semibold mb-1">Atención sin descanso</div>
+        <div class="text-slate-500 text-sm">sin personal extra</div>
+      </div>
+    </div>
+
+    <!-- Client logos placeholder -->
+    <div class="text-center fade-up delay-5">
+      <p class="text-slate-600 text-xs uppercase tracking-widest font-semibold mb-8">Clínicas que ya confían en nuestra infraestructura</p>
+      <div class="flex items-center justify-center gap-10 md:gap-16 flex-wrap">
+        <span class="font-display font-bold text-xl text-slate-500 opacity-40 hover:opacity-60 transition-opacity cursor-default">Bella Esté</span>
+        <span class="font-display font-bold text-xl text-slate-500 opacity-40 hover:opacity-60 transition-opacity cursor-default">MedSkin</span>
+        <span class="font-display font-bold text-xl text-slate-500 opacity-40 hover:opacity-60 transition-opacity cursor-default">Clínica Nova</span>
+        <span class="font-display font-bold text-xl text-slate-500 opacity-40 hover:opacity-60 transition-opacity cursor-default">AuraClinic</span>
+        <span class="font-display font-bold text-xl text-slate-500 opacity-40 hover:opacity-60 transition-opacity cursor-default">DermaPro</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════════════════════
+     BLOQUE 6 · PRICING
+══════════════════════════════════════════════════ -->
+<section class="py-28 relative overflow-hidden" id="pricing">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 55% 65% at 50% 50%, rgba(139,92,246,.06) 0%, transparent 70%);"></div>
+
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+
+    <div class="text-center mb-16">
+      <h2 class="font-display font-bold text-4xl md:text-5xl text-slate-100 mb-4 fade-up">Elegí tu nivel de infraestructura</h2>
+      <p class="text-slate-400 text-lg fade-up delay-1">Sin letra chica. Sin costos escondidos. Sin permanencia.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+
+      <!-- Tier 1: Starter -->
+      <div class="glass rounded-3xl p-8 card-hover fade-up delay-1">
+        <div class="mb-7">
+          <h3 class="font-display font-bold text-2xl text-slate-100 mb-1">Starter</h3>
+          <p class="text-slate-400 text-sm">Para clínicas que recién empiezan a automatizar</p>
+        </div>
+        <div class="mb-8">
+          <span class="font-display font-extrabold text-5xl text-slate-100">$500</span>
+          <span class="text-slate-400 text-sm ml-2">USD / mes</span>
+          <div class="text-slate-500 text-xs mt-1">Setup inicial incluido</div>
+        </div>
+        <ul class="space-y-4 mb-8">
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Chatbot de WhatsApp + Instagram</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Hasta 300 leads/mes gestionados</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">3 flujos de automatización</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Recordatorios de turno automáticos</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Soporte por email 48hs</span></li>
+        </ul>
+        <p class="text-slate-500 text-xs mb-6">Ideal para: clínicas con 1–2 profesionales que quieren empezar a automatizar sin grandes inversiones</p>
+        <a href="mailto:brunoaltabas17@gmail.com" class="btn-outline w-full" style="display:flex;justify-content:center;">Empezar con Starter</a>
+      </div>
+
+      <!-- Tier 2: Growth (POPULAR) -->
+      <div class="glass-violet rounded-3xl p-8 card-hover pricing-popular fade-up delay-2">
+        <div class="popular-badge">★ MÁS POPULAR</div>
+        <div class="mb-7">
+          <h3 class="font-display font-bold text-2xl text-slate-100 mb-1">Growth</h3>
+          <p class="text-slate-400 text-sm">Para clínicas medianas listas para escalar</p>
+        </div>
+        <div class="mb-8">
+          <span class="font-display font-extrabold text-5xl text-slate-100">$1.000</span>
+          <span class="text-slate-400 text-sm ml-2">USD / mes</span>
+          <div class="text-slate-500 text-xs mt-1">+ $400 USD mantenimiento mensual</div>
+        </div>
+        <ul class="space-y-4 mb-8">
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Todo lo de Starter</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Hasta 1.000 leads/mes gestionados</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">8 flujos de automatización a medida</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Integración con tu agenda digital</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Reactivación automática de pacientes</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Dashboard de métricas en tiempo real</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Soporte prioritario 24hs</span></li>
+        </ul>
+        <p class="text-slate-500 text-xs mb-6">Ideal para: clínicas con 3–10 profesionales que quieren cerrar más tratamientos sin contratar</p>
+        <a href="mailto:brunoaltabas17@gmail.com" class="btn-primary w-full" style="display:flex;justify-content:center;">Empezar con Growth</a>
+        <!-- Value stack -->
+        <div class="mt-6 pt-6 border-t border-white/10 text-center">
+          <p class="text-slate-500 text-xs mb-2">Valor real del servicio</p>
+          <div class="flex items-center justify-center gap-3">
+            <span class="value-strike text-sm">$4.800 USD</span>
+            <span class="font-bold text-sm" style="color:#a78bfa;">→ Tu inversión: $1.400/mes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier 3: Scale -->
+      <div class="glass rounded-3xl p-8 card-hover fade-up delay-3">
+        <div class="mb-7">
+          <h3 class="font-display font-bold text-2xl text-slate-100 mb-1">Scale</h3>
+          <p class="text-slate-400 text-sm">Para grupos de clínicas o cadenas con alta demanda</p>
+        </div>
+        <div class="mb-8">
+          <span class="font-display font-extrabold text-5xl text-slate-100">Custom</span>
+          <div class="text-slate-500 text-xs mt-1">Precio según volumen y necesidades</div>
+        </div>
+        <ul class="space-y-4 mb-8">
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Todo lo de Growth</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Leads ilimitados</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">IA entrenada con tu voz de marca</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Integración completa con tu software</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Account manager dedicado</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Implementación express 5 días</span></li>
+          <li class="check-item"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg><span class="text-slate-300">Soporte 24/7 por WhatsApp</span></li>
+        </ul>
+        <p class="text-slate-500 text-xs mb-6">Ideal para: grupos de 3+ sucursales o clínicas con más de 500 leads mensuales</p>
+        <a href="mailto:brunoaltabas17@gmail.com" class="btn-outline w-full" style="display:flex;justify-content:center;">Hablar con el equipo</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════════════════════
+     BLOQUE 7 · FAQ
+══════════════════════════════════════════════════ -->
+<section class="py-28 relative overflow-hidden" id="faq">
+  <div class="max-w-3xl mx-auto px-6">
+
+    <div class="text-center mb-16">
+      <h2 class="font-display font-bold text-4xl md:text-5xl text-slate-100 mb-4 fade-up">Preguntas que nos hacen siempre</h2>
+      <p class="text-slate-400 fade-up delay-1">Respondemos todo antes de que lo preguntes.</p>
+    </div>
+
+    <div class="space-y-3">
+
+      <!-- FAQ 1 -->
+      <div class="glass rounded-2xl overflow-hidden fade-up delay-1">
+        <button class="w-full text-left px-7 py-5 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
+          <span class="font-display font-semibold text-lg text-slate-100">¿Cuánto tarda la implementación?</span>
+          <svg class="faq-chevron w-5 h-5 flex-shrink-0" style="color:#8b5cf6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p class="px-7 pb-6 text-slate-400 leading-relaxed">La implementación completa toma exactamente 7 días desde que firmamos el acuerdo. El día 1 es onboarding y mapeo de tus procesos. Del día 2 al 5 construimos y configuramos los flujos. Los últimos 2 días son testing y ajustes en vivo. Al día 7, tu sistema está activo y respondiendo leads.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="glass rounded-2xl overflow-hidden fade-up delay-2">
+        <button class="w-full text-left px-7 py-5 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
+          <span class="font-display font-semibold text-lg text-slate-100">¿Necesito tener equipo técnico para manejarlo?</span>
+          <svg class="faq-chevron w-5 h-5 flex-shrink-0" style="color:#8b5cf6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p class="px-7 pb-6 text-slate-400 leading-relaxed">Cero conocimientos técnicos necesarios. Diseñamos la infraestructura para que tu equipo de recepción pueda operar el dashboard sin dificultad. Te damos capacitación completa durante la implementación. Cualquier ajuste futuro que necesites, lo hacemos nosotros dentro del mantenimiento mensual.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="glass rounded-2xl overflow-hidden fade-up delay-3">
+        <button class="w-full text-left px-7 py-5 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
+          <span class="font-display font-semibold text-lg text-slate-100">¿Con qué plataformas se integra?</span>
+          <svg class="faq-chevron w-5 h-5 flex-shrink-0" style="color:#8b5cf6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p class="px-7 pb-6 text-slate-400 leading-relaxed">La infraestructura funciona con WhatsApp Business, Instagram DMs, email y la mayoría de softwares de agenda médica (Doctoralia, TurneroOnline, Reservo, entre otros). Si usás un sistema propio, lo evaluamos en la auditoría inicial — la mayoría son compatibles sin modificaciones adicionales.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="glass rounded-2xl overflow-hidden fade-up delay-4">
+        <button class="w-full text-left px-7 py-5 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
+          <span class="font-display font-semibold text-lg text-slate-100">¿Qué pasa si los resultados no se dan?</span>
+          <svg class="faq-chevron w-5 h-5 flex-shrink-0" style="color:#8b5cf6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p class="px-7 pb-6 text-slate-400 leading-relaxed">Trabajamos con garantía de ROI: si en los primeros 30 días no ves un aumento medible en la conversión de leads, te devolvemos el dinero del mes sin preguntas. En 3+ años de trabajo con clínicas estéticas, no hemos tenido que activar esa garantía — pero la ofrecemos porque creemos en lo que entregamos.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 5 -->
+      <div class="glass rounded-2xl overflow-hidden fade-up delay-5">
+        <button class="w-full text-left px-7 py-5 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
+          <span class="font-display font-semibold text-lg text-slate-100">¿Los datos de mis pacientes están seguros?</span>
+          <svg class="faq-chevron w-5 h-5 flex-shrink-0" style="color:#8b5cf6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p class="px-7 pb-6 text-slate-400 leading-relaxed">Toda la infraestructura opera bajo encriptación end-to-end. No almacenamos datos sensibles de pacientes en nuestros servidores — la información queda en tus propios sistemas. Trabajamos en cumplimiento con la Ley 25.326 de protección de datos personales. Podés auditar la seguridad en cualquier momento.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 6 -->
+      <div class="glass rounded-2xl overflow-hidden fade-up delay-1">
+        <button class="w-full text-left px-7 py-5 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
+          <span class="font-display font-semibold text-lg text-slate-100">¿Puedo pedir cambios después de la implementación?</span>
+          <svg class="faq-chevron w-5 h-5 flex-shrink-0" style="color:#8b5cf6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p class="px-7 pb-6 text-slate-400 leading-relaxed">Las modificaciones menores (textos, horarios, precios, FAQs del bot) las hacemos en 24–48hs sin costo adicional — para eso existe el mantenimiento mensual. Cambios estructurales más grandes los evaluamos en conjunto y te cotizamos si corresponde. Nunca te quedás con un sistema desactualizado.</p>
+        </div>
+      </div>
+
+      <!-- FAQ 7 -->
+      <div class="glass rounded-2xl overflow-hidden fade-up delay-2">
+        <button class="w-full text-left px-7 py-5 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
+          <span class="font-display font-semibold text-lg text-slate-100">¿Hay contrato de permanencia?</span>
+          <svg class="faq-chevron w-5 h-5 flex-shrink-0" style="color:#8b5cf6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p class="px-7 pb-6 text-slate-400 leading-relaxed">Ninguno. Trabajamos mes a mes porque confiamos en que los resultados hablan solos. Si en algún momento querés pausar o dar de baja el servicio, avisás con 15 días de anticipación y listo. No retenemos clientes que no están 100% conformes — eso no es como trabajamos.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+
+<!-- ══════════════════════════════════════════════════
+     BLOQUE 8 · CTA FINAL
+══════════════════════════════════════════════════ -->
+<section class="py-36 relative overflow-hidden">
+  <div class="grid-pattern" style="opacity:.25;"></div>
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 55% 65% at 30% 50%, rgba(139,92,246,.13) 0%, transparent 60%), radial-gradient(ellipse 45% 55% at 75% 50%, rgba(6,182,212,.09) 0%, transparent 60%);"></div>
+
+  <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+
+    <div class="flex justify-center mb-8 fade-up">
+      <span class="badge"><span class="pulse-dot"></span> Cupos disponibles este mes</span>
+    </div>
+
+    <h2 class="font-display font-extrabold text-5xl md:text-6xl leading-[1.08] mb-7 fade-up delay-1">
+      Tu clínica puede cerrar<br>el doble de tratamientos<br>
+      <span class="gradient-text">a partir de la semana que viene</span>
+    </h2>
+
+    <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-11 leading-relaxed fade-up delay-2">
+      Reservá tu auditoría gratuita. Analizamos tu operación actual, identificamos los puntos de fuga de leads y te mostramos exactamente qué automatizar primero. Sin costo. Sin compromiso.
+    </p>
+
+    <div class="flex justify-center mb-8 fade-up delay-3">
+      <a href="mailto:brunoaltabas17@gmail.com" class="btn-primary btn-primary-lg" style="font-size:1.15rem;padding:20px 44px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        Reservá tu auditoría gratuita
+      </a>
+    </div>
+
+    <p class="text-slate-500 text-sm mb-10 fade-up delay-4">
+      Tomamos <strong class="text-slate-400">6 clientes nuevos por mes</strong> · Quedan <strong style="color:#a78bfa;">3 lugares para mayo 2026</strong>
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-8 fade-up delay-5">
+      <div class="check-item">
+        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+        Sin costo la auditoría
+      </div>
+      <div class="check-item">
+        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+        Sin compromiso de contratación
+      </div>
+      <div class="check-item">
+        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+        ROI garantizado o te devolvemos el dinero
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════ -->
+<footer class="border-t border-white/5 py-16">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+
+      <!-- Brand -->
+      <div class="md:col-span-2">
+        <a href="#" class="logo-text text-2xl block mb-3">Clinic AI</a>
+        <p class="text-slate-500 text-sm leading-relaxed max-w-xs">
+          Infraestructura con IA para clínicas estéticas. Cerrás más tratamientos sin perder un lead más — activo en 7 días.
+        </p>
+      </div>
+
+      <!-- Nav -->
+      <div>
+        <h4 class="font-display font-semibold text-slate-300 mb-4 text-sm uppercase tracking-widest">Navegación</h4>
+        <ul class="space-y-3">
+          <li><a href="#servicio"   class="text-slate-500 hover:text-slate-300 transition-colors text-sm">Servicio</a></li>
+          <li><a href="#proceso"    class="text-slate-500 hover:text-slate-300 transition-colors text-sm">Proceso</a></li>
+          <li><a href="#resultados" class="text-slate-500 hover:text-slate-300 transition-colors text-sm">Resultados</a></li>
+          <li><a href="#pricing"    class="text-slate-500 hover:text-slate-300 transition-colors text-sm">Pricing</a></li>
+          <li><a href="#faq"        class="text-slate-500 hover:text-slate-300 transition-colors text-sm">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h4 class="font-display font-semibold text-slate-300 mb-4 text-sm uppercase tracking-widest">Contacto</h4>
+        <div class="space-y-2">
+          <a href="mailto:brunoaltabas17@gmail.com" class="social-card glass" style="border:1px solid rgba(255,255,255,.06);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+            </svg>
+            brunoaltabas17@gmail.com
+          </a>
+          <a href="https://wa.me/5491100000000" target="_blank" rel="noopener" class="social-card glass" style="border:1px solid rgba(255,255,255,.06);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+            </svg>
+            WhatsApp
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener" class="social-card glass" style="border:1px solid rgba(255,255,255,.06);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/>
+            </svg>
+            Instagram
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-card glass" style="border:1px solid rgba(255,255,255,.06);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+            </svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="divider mb-8" style="margin:0 0 2rem 0;">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-slate-600 text-sm">© 2026 Clinic AI · Todos los derechos reservados</p>
+      <p class="text-slate-600 text-sm">Infraestructura con IA para clínicas estéticas de lujo</p>
+    </div>
+
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════════════════
+     JS
+══════════════════════════════════════════════════ -->
+<script>
+  // ── Navbar scroll ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ── IntersectionObserver → fade-up ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ── FAQ accordion ──
+  function toggleFaq(btn) {
+    const answer  = btn.nextElementSibling;
+    const chevron = btn.querySelector('.faq-chevron');
+    const isOpen  = answer.classList.contains('open');
+
+    // close all
+    document.querySelectorAll('.faq-answer.open').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.faq-chevron.rotated').forEach(c => c.classList.remove('rotated'));
+
+    if (!isOpen) {
+      answer.classList.add('open');
+      chevron.classList.add('rotated');
+    }
+  }
+
+  // ── Mobile menu ──
+  function toggleMobile() {
+    const m = document.getElementById('mobileMenu');
+    m.style.display = m.style.display === 'none' ? 'block' : 'none';
+  }
+  function closeMobile() {
+    document.getElementById('mobileMenu').style.display = 'none';
+  }
+
+  // ── Smooth scroll ──
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
